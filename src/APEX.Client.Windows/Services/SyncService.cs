@@ -1,4 +1,5 @@
-﻿using System;
+﻿using APEX.Core;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -22,7 +23,27 @@ namespace APEX.Client.Windows.Services
             _checksumProvider = checksumProvider;
         }
 
-        public void Start()
+        public async Task Start()
+        {
+            await PerformStartupManifestCheckAsync();
+
+            //WatchSyncedFolders();
+        }
+
+        private async Task PerformStartupManifestCheckAsync()
+        {
+            foreach (var syncFolder in _settingService.Settings.SyncedFolders)
+            {
+                var manifestResult = await _manifestService.GetManifestAsync(syncFolder.Path);
+                if (manifestResult.IsFaulted)
+                    throw manifestResult.DetailedException; // TODO: log
+
+                var manifest = manifestResult.ResultValue;
+                Console.WriteLine(manifest);
+            }
+        }
+
+        private void WatchSyncedFolders()
         {
             foreach (var syncFolder in _settingService.Settings.SyncedFolders)
             {
@@ -53,27 +74,22 @@ namespace APEX.Client.Windows.Services
 
         private void Watcher_Error(object sender, ErrorEventArgs e)
         {
-            throw new NotImplementedException();
         }
 
         private void Watcher_Renamed(object sender, RenamedEventArgs e)
         {
-            throw new NotImplementedException();
         }
 
         private void Watcher_Deleted(object sender, FileSystemEventArgs e)
         {
-            throw new NotImplementedException();
         }
 
         private void Watcher_Created(object sender, FileSystemEventArgs e)
         {
-            throw new NotImplementedException();
         }
 
         private void Watcher_Changed(object sender, FileSystemEventArgs e)
         {
-            throw new NotImplementedException();
         }
 
         public void Dispose()

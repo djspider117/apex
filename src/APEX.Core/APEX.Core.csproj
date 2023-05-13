@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	  <TargetFramework>net7</TargetFramework>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\APEX.Data\APEX.Data.csproj" />
+  </ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="GhostCore.SafeTaskResult" Version="2.0.0" />
+	</ItemGroup>
+
+</Project>

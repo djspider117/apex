@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APEX.Data", "APEX.Data\APEX
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APEX.Client.Windows", "APEX.Client.Windows\APEX.Client.Windows.csproj", "{2FDAB063-E77B-4195-8F12-EB865DA8BBAD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APEX.Core", "APEX.Core\APEX.Core.csproj", "{D9051427-4CDE-462B-99EC-4CE362E60047}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{2FDAB063-E77B-4195-8F12-EB865DA8BBAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2FDAB063-E77B-4195-8F12-EB865DA8BBAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2FDAB063-E77B-4195-8F12-EB865DA8BBAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9051427-4CDE-462B-99EC-4CE362E60047}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9051427-4CDE-462B-99EC-4CE362E60047}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9051427-4CDE-462B-99EC-4CE362E60047}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9051427-4CDE-462B-99EC-4CE362E60047}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

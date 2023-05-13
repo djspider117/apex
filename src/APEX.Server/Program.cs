@@ -1,8 +1,14 @@
 
+using APEX.Core;
 using APEX.Data;
+using APEX.Server.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using System.Text.Json.Serialization;
 
 namespace APEX.Server
 {
@@ -20,17 +26,43 @@ namespace APEX.Server
 
         private static void ConfigureServices(WebApplicationBuilder builder)
         {
+            // TODO secure everything in keyvaults
+
             var configuration = builder.Configuration;
             var services = builder.Services;
 
-            var connString = configuration.GetConnectionString("AzureSQL"); //TODO: move to secret
-            services.AddDbContext<ApexDbContext>(options => options.UseSqlServer(connString));
+            var connString = configuration.GetConnectionString("DefaultConnection"); //TODO: move to secret
+            services.AddDbContext<ApexDbContext>(options =>
+            {
+                options.UseSqlServer(connString);
+                options.EnableSensitiveDataLogging();
+            });
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddIdentity<ApexUser, IdentityRole<long>>(options =>
+            services.AddScoped<IManifestService, ManifestService>();
+
+            services.AddIdentity<ApexUser, ApexRole>()
+                    .AddEntityFrameworkStores<ApexDbContext>()
+                    .AddDefaultTokenProviders();
+
+            services.AddAuthentication(options =>
             {
-                options.SignIn.RequireConfirmedAccount = true;
-            }).AddEntityFrameworkStores<ApexDbContext>();
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.SaveToken = true;
+                options.RequireHttpsMetadata = false;
+                options.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidAudience = configuration["JWT:ValidAudience"],
+                    ValidIssuer = configuration["JWT:ValidIssuer"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"]))
+                };
+            });
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -52,7 +84,9 @@ namespace APEX.Server
                 options.User.RequireUniqueEmail = true;
             });
 
-            services.AddControllers();
+            services.AddControllers()
+                    .AddJsonOptions(jsonOpts => jsonOpts.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
         }

@@ -1,24 +1,24 @@
 ﻿namespace APEX.Data
 {
-    public record FileEntry(long Id, 
-                            string Name, 
-                            byte IsFolder, 
-                            string MimeType, 
-                            long Size, 
-                            string Hash, 
-                            List<FileEntry> Children, 
+    public class FileEntry
+    {
+        public long Id { get; set; }
+        public string Name { get; set; }
+        public bool IsFolder { get; set; }
+        public string MimeType { get; set; }
+        public long Size { get; set; }
+        public string Hash { get; set; }
+        public List<FileEntry> Children { get; set; }
 
-                            FileEntry ParentFile, 
-                            long ParentFileId, 
+        public FileEntry ParentFile { get; set; }
+        public long? ParentFileId { get; set; }
 
-                            DateTimeOffset DateCreated, 
-                            ApexUser CreatedBy, 
-                            long CreatedById, 
+        public DateTimeOffset DateCreated { get; set; }
+        public ApexUser CreatedBy { get; set; }
+        public long CreatedById { get; set; }
 
-                            DateTimeOffset DateModified, 
-                            ApexUser ModifiedBy, 
-                            long ModifiedById, 
-
-                            FileContainer ParentContainer, 
-                            long? ParentContainerId);
+        public DateTimeOffset DateModified { get; set; }
+        public ApexUser ModifiedBy { get; set; }
+        public long ModifiedById { get; set; }
+    }
 }

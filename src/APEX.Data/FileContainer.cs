@@ -1,8 +1,12 @@
 ﻿namespace APEX.Data
 {
-    public record FileContainer(long Id, 
-                                string Name, 
-                                FileEntry RootFolder, 
-                                long RootFolderId, 
-                                List<FileEntry> FileEntries);
+    public class FileContainer
+    {
+        public long Id { get; set; }
+        public string Name { get; set; }
+        public FileEntry RootFolder { get; set; }
+        public long RootFolderId { get; set; }
+
+        public List<FileEntry> FileEntries { get; set; }
+    }
 }

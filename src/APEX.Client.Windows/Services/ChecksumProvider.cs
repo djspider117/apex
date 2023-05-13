@@ -4,18 +4,18 @@ using System.Security.Cryptography;
 
 namespace APEX.Client.Windows.Services
 {
-    public sealed class MD5ChecksumProvider : IChecksumProvider, IDisposable
+    public sealed class ChecksumProvider : IChecksumProvider, IDisposable
     {
-        private MD5 _hashFunction;
+        private HashAlgorithm _hashFunction;
 
-        public MD5ChecksumProvider()
+        public ChecksumProvider()
         {
-            _hashFunction = MD5.Create();
+            _hashFunction = SHA256.Create();
         }
 
         public string GetChecksum(string filePath)
         {
-            using var stream = new FileStream(filePath, new FileStreamOptions { BufferSize = 1200000 });
+            using var stream = new FileStream(filePath, FileMode.Open);
 
             var checksum = _hashFunction.ComputeHash(stream);
             return BitConverter.ToString(checksum).Replace("-", string.Empty);

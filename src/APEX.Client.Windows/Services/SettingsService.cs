@@ -39,10 +39,11 @@ namespace APEX.Client.Windows.Services
                 {
                     CreateDefaults();
 
-                    var json = JsonSerializer.Serialize(_defaultSettings, _jsonSerializerOptions);
+                    var json = JsonSerializer.Serialize(_defaultSettings);
                     await File.WriteAllTextAsync(SETTINGS_PATH, json);
 
                     Settings = _defaultSettings;
+                    return SafeTaskResult.Ok;
                 }
 
                 var settingsJson = await File.ReadAllTextAsync(SETTINGS_PATH);

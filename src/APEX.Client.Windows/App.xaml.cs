@@ -1,5 +1,6 @@
 ﻿using APEX.Client.Windows.Data;
 using APEX.Client.Windows.Services;
+using APEX.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -30,7 +31,9 @@ namespace APEX.Client.Windows
                 // App Host
                 services.AddHostedService<ApplicationHostService>();
 
-                services.AddSingleton<IChecksumProvider, MD5ChecksumProvider>();
+                // TODO: make sure everything gets disposed at app exit
+                services.AddSingleton<SyncService>();
+                services.AddSingleton<IChecksumProvider, ChecksumProvider>();
                 services.AddSingleton<IManifestService, LocalManifestService>();
                 services.AddSingleton<IPageService, PageService>();
                 services.AddSingleton<IThemeService, ThemeService>();
